@@ -374,11 +374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2586500092139240674, guid: 1c317bc19b0b843d1a5cc932c5cb6609, type: 3}
       propertyPath: <Speed>k__BackingField
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2586500092139240674, guid: 1c317bc19b0b843d1a5cc932c5cb6609, type: 3}
       propertyPath: <MeshSize>k__BackingField
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2586500092139240674, guid: 1c317bc19b0b843d1a5cc932c5cb6609, type: 3}
       propertyPath: <MeshWidth>k__BackingField

@@ -21,6 +21,10 @@ public class WaveCPU: MonoBehaviour
     [field: SerializeField] public List<float> Amplitudes { get; private set; } = new List<float> { 1f };
     [field: SerializeField] public List<float> Frequencies { get; private set; } = new List<float> { 1f };
 
+    [Header("Gizmos Draw Settings")]
+    [SerializeField] Color gizmosColor = Color.black;
+    [SerializeField] float gizmosVertexSize = 0.02f;
+
     Mesh mesh;
     Vector3[] baseVertices;
     Vector3[] displacedVertices;
@@ -33,22 +37,24 @@ public class WaveCPU: MonoBehaviour
 
         for (int i = 0; i < baseVertices.Length; ++i)
         {
-            Vector3 p = baseVertices[i];
+            Vector3 pos = baseVertices[i];
 
             float wave = 0f;
             int numWaves = Mathf.Min(Amplitudes.Count, Frequencies.Count);
-      
+
             float halfWidth = MeshSize * 0.5f;
-            float normX = (p.x + halfWidth) / MeshSize;
+            float normX = (pos.x + halfWidth) / MeshSize;
 
             for (int j = 0; j < numWaves; ++j)
             {
                 float f = Frequencies[j] * 2f * Mathf.PI;
                 float a = Amplitudes[j];
-                wave += a * Mathf.Sin(normX * f + waveTimer * Speed);
+                float p = Speed * f;
+                float t = waveTimer;
+                wave += a * Mathf.Sin(normX * f + t * p);
             }
 
-            displacedVertices[i] = new Vector3(p.x, p.y + wave, p.z);
+            displacedVertices[i] = new Vector3(pos.x, pos.y + wave, pos.z);
         }
 
         mesh.vertices = displacedVertices;
@@ -82,11 +88,25 @@ public class WaveCPU: MonoBehaviour
         }
     }
 
+    [ExecuteInEditMode]
+    void OnDrawGizmos()
+    {
+        if (meshFilter == null || meshFilter.sharedMesh == null) return;
+        
+        Vector3[] verts = meshFilter.sharedMesh.vertices;
+        foreach (Vector3 v in verts)
+        {
+            Gizmos.DrawSphere(transform.TransformPoint(v), gizmosVertexSize);
+        }
+    }
+
     void Awake()
     {
         Utils.InitComponent(this, ref meshFilter);
         Utils.InitComponent(this, ref meshRenderer);
         InitMesh();
+
+        Gizmos.color = gizmosColor;
     }
 
     void Update()
