@@ -9,12 +9,13 @@ public class WaveCPU : MonoBehaviour
     [SerializeField] MeshRenderer meshRenderer;
 
     [field: Header("Mesh Generation Settings")]
-    [field: SerializeField, Range(1, 200)] public int MeshWidth { get; private set; } = 20;
-    [field: SerializeField, Range(1, 200)] public int MeshHeight { get; private set; } = 20;
-    [field: SerializeField, Range(1f, 20f)] public float MeshSize { get; private set; } = 1f;
+    [field: SerializeField, Range(1, 200)] public int MeshWidth { get; private set; } = 100;
+    [field: SerializeField, Range(1, 200)] public int MeshHeight { get; private set; } = 100;
+    [field: SerializeField, Range(1f, 20f)] public float MeshSize { get; private set; } = 5f;
 
     [field: Header("Wave Settings")]
     [field: SerializeField, Range(0f, 10f)] public float Speed { get; private set; } = 1f;
+    [field: SerializeField, Range(0f, 10f)] public float Height { get; private set; } = 1f;
     [field: SerializeField] public List<Wave> Waves { get; private set; } = new List<Wave>();
 
     [Header("Gizmos Draw Settings")]
@@ -47,7 +48,7 @@ public class WaveCPU : MonoBehaviour
             foreach (Wave wave in Waves)
                 height += wave.GetHeight(XZ, time);
 
-            displacedVertices[i] = new Vector3(position.x, height, position.z);
+            displacedVertices[i] = new Vector3(position.x, height * Height, position.z);
         }
 
         mesh.vertices = displacedVertices;
